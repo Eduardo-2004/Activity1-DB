@@ -41,7 +41,7 @@ VALUES	( 1, 'Lucas Silva', 2, 'VENDAS', 2, 1570, 100),
 		( 8, 'Thiago Neves', 1, 'GER', 5, 7570, 432),  
 		( 9, 'João Paulo', 3, 'ADV', 4, 8570, 876),  
 		( 10, 'Kauan Rodrigo', 5, 'GER', 2, 1770, 873),
-		( 11, 'Casimiro Antônio', 3, 'Fiscal', 9, 9070, null),
+		( 11, 'Casimiro Antônio', 3, 'Fiscal', 9, 9070, 257),
 		( 12, 'Yeferson Soteldo', 1, 'ADM', 3, 3800, 573),
 		( 13, 'Gabriel Barbosa', 5, 'ATEND', 0.8, 1870, 873),
 		( 14, 'Lucas Paquetá', 5, 'ATEND', 2, 1600, null),
@@ -153,10 +153,10 @@ ORDER BY RemuneracaoTotal ASC;
 -- 17.Lista Nome, Salário, comissão e remuneração total de todos os empregados com salário maior que 2.000 ou comissão maior que 800. 
 -- Apresenta o resultado classificado em ordem crescente de departamento e em cada departamento, em ordem decrescente de salario. ***
 
-SELECT NomeEmpregado, Salario, Comissao, (Salario + Comissao) as 'RemuneracaoTotal'
+SELECT E.NomeEmpregado, E.Salario, E.Comissao, (E.Salario + E.Comissao) as 'RemuneracaoTotal'
 FROM Empregado as E JOIN Departamento as D
 ON E.IdDepto = D.IdDepto
-WHERE Salario > 2000 or Comissao > 800
+WHERE E.Salario > 2000 or E.Comissao > 800
 ORDER BY D.NomeDepto ASC, E.Salario DESC  
 
 -- 18.Lista o maior salário, o menor salário e a média dos salários de todos os Empregados.
@@ -193,7 +193,7 @@ group by D.NomeDepto
 
 -- 23. Lista  o departamento, o cargo, o maior salário, o menor salário, a média dos salários e a quantidade dos Empregados para cada cargo dentro de cada departamento
 
-SELECT D.NomeDepto, E.Cargo, MAX(E.Salario) as 'MaiorSalario', MIN(Salario) as 'MenorSalario', AVG(Salario) as 'MediaSalarial', COUNT(IdEmpregado) as 'QntEmpregado'
+SELECT D.NomeDepto, E.Cargo, MAX(E.Salario) as 'MaiorSalario', MIN(E.Salario) as 'MenorSalario', AVG(E.Salario) as 'MediaSalarial', COUNT(E.IdEmpregado) as 'QntEmpregado'
 FROM Empregado as E JOIN Departamento as D
 ON E.IdDepto = D.IdDepto
 GROUP BY D.NomeDepto,  E.Cargo; 
@@ -211,7 +211,7 @@ HAVING COUNT(D.IdDepto)>= 5
 SELECT D.NomeDepto, MAX(E.Salario) as 'Maior', MIN(E.Salario) as 'Menor', AVG(E.Salario) as 'MediaSalarial', COUNT(E.IdEmpregado) as 'Qnt-Empregados' 
 FROM Empregado as E JOIN Departamento as D
 ON E.IdDepto = D.IdDepto
-WHERE Salario > 1400 
+WHERE E.Salario > 1400 
 GROUP BY D.NomeDepto
 HAVING COUNT(E.IdEmpregado) >= 3;
 
