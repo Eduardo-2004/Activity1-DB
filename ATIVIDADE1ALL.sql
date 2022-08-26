@@ -94,7 +94,7 @@ SELECT NomeEmpregado, Salario, Comissao, (Salario + Comissao) as 'RemuneracaoTot
 FROM Empregado
 WHERE Salario > 2000 or Comissao > 700;
 
--- ** 9.Lista Nome, Salário, comissão e remuneração total de todos os empregados com remuneração total menor que 1.800. **
+-- 9.Lista Nome, Salário, comissão e remuneração total de todos os empregados com remuneração total menor que 1.800. 
 
 SELECT NomeEmpregado, Salario, Comissao, (Salario + Comissao) as RemuneracaoTotal
 FROM Empregado
@@ -113,7 +113,7 @@ SELECT NomeEmpregado, Cargo
 FROM Empregado
 WHERE NomeEmpregado LIKE '__n%';
 
--- ** 12.Lista Nome e cargo dos Empregados que o nome tenha N (maiúscula ou minúscula) como terceira letra **
+-- 12.Lista Nome e cargo dos Empregados que o nome tenha N (maiúscula ou minúscula) como terceira letra 
 
 SELECT NomeEmpregado, Cargo 
 FROM Empregado
@@ -121,7 +121,7 @@ WHERE NomeEmpregado LIKE '__N%';
 
 -- 13. Lista Nome, Salário, comissão e remuneração total  (Salário + Comissão) de todos os empregados com salário maior que 2.000 ou comissão maior que 800. Apresenta o resultado classificado em ordem alfabética de nome.
 
-SELECT NomeEmpregado, Salario, (Salario + Comissao) as 'RemuneracaoTotal' 
+SELECT NomeEmpregado, Salario, Comissao, (Salario + Comissao) as 'RemuneracaoTotal' 
 FROM Empregado
 WHERE Salario > 2000 OR Comissao > 800
 ORDER BY NomeEmpregado ASC;
@@ -151,7 +151,7 @@ WHERE Salario > 2000 OR Comissao > 800
 ORDER BY RemuneracaoTotal ASC;
 
 -- 17.Lista Nome, Salário, comissão e remuneração total de todos os empregados com salário maior que 2.000 ou comissão maior que 800. 
--- Apresenta o resultado classificado em ordem crescente de departamento e em cada departamento, em ordem decrescente de salario. ***
+-- Apresenta o resultado classificado em ordem crescente de departamento e em cada departamento, em ordem decrescente de salario. 
 
 SELECT E.NomeEmpregado, E.Salario, E.Comissao, (E.Salario + E.Comissao) as 'RemuneracaoTotal'
 FROM Empregado as E JOIN Departamento as D
@@ -165,7 +165,7 @@ SELECT MAX(Salario) as 'Maior-Salario', MIN(Salario) as 'Menor-Salario', AVG(Sal
 
 -- 19.Lista o maior salário, o menor salário, a média dos salários e a quantidade dos Empregados com cargo GER ou VENDAS.
 
-SELECT MAX(Salario) as 'Maior-Salario', MIN(Salario) as 'Menor-Salario', AVG(Salario) as 'Média-Salarial', COUNT(Cargo) AS 'Qnt-Cargo-GER-OR-VENDAS'
+SELECT MAX(Salario) as 'Maior-Salario', MIN(Salario) as 'Menor-Salario', AVG(Salario) as 'Média-Salarial', COUNT(IdEmpregado) AS 'Empregados-GER-OR-VENDAS'
 FROM Empregado
 WHERE Cargo = 'GER' OR Cargo = 'VENDAS'
 
@@ -220,7 +220,7 @@ HAVING COUNT(E.IdEmpregado) >= 3;
 SELECT * FROM Empregado
 WHERE Comissao is NULL;
 
---** 27.Lista nome e salário dos empregados com salário menor que a média dos salários
+-- 27.Lista nome e salário dos empregados com salário menor que a média dos salários
 
 SELECT NomeEmpregado, Salario 
 FROM Empregado
@@ -236,7 +236,7 @@ WHERE Salario > (SELECT AVG(Salario) FROM Empregado);
  SELECT E.NomeEmpregado, E.Salario
  FROM Empregado as E JOIN Departamento as D
  ON E.IdDepto = D.IdDepto
- WHERE E.Salario IN(SELECT MIN(Salario) FROM Empregado AS E GROUP BY E.IdDepto)
+ WHERE E.Salario IN(SELECT MIN(E.Salario) FROM Empregado AS E GROUP BY E.IdDepto)
  ORDER BY D.IdDepto ASC;
 
 -- 30.Lista quantos empregados em cada departamento tem salário maior que a média de todos os salários
