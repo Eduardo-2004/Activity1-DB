@@ -94,7 +94,7 @@ SELECT NomeEmpregado, Salario, Comissao, (Salario + Comissao) as 'RemuneracaoTot
 FROM Empregado
 WHERE Salario > 2000 or Comissao > 700;
 
--- 9.Lista Nome, Salário, comissão e remuneração total de todos os empregados com remuneração total menor que 1.800. 
+-- ** 9.Lista Nome, Salário, comissão e remuneração total de todos os empregados com remuneração total menor que 1.800. **
 
 SELECT NomeEmpregado, Salario, Comissao, (Salario + Comissao) as RemuneracaoTotal
 FROM Empregado
@@ -113,7 +113,7 @@ SELECT NomeEmpregado, Cargo
 FROM Empregado
 WHERE NomeEmpregado LIKE '__n%';
 
--- 12.Lista Nome e cargo dos Empregados que o nome tenha N (maiúscula ou minúscula) como terceira letra 
+-- 12.Lista Nome e cargo dos Empregados que o nome tenha N (maiúscula ou minúscula) como terceira letra **
 
 SELECT NomeEmpregado, Cargo 
 FROM Empregado
@@ -121,7 +121,7 @@ WHERE NomeEmpregado LIKE '__N%';
 
 -- 13. Lista Nome, Salário, comissão e remuneração total  (Salário + Comissão) de todos os empregados com salário maior que 2.000 ou comissão maior que 800. Apresenta o resultado classificado em ordem alfabética de nome.
 
-SELECT NomeEmpregado, Salario, Comissao, (Salario + Comissao) as 'RemuneracaoTotal' 
+SELECT NomeEmpregado, Salario, (Salario + Comissao) as 'RemuneracaoTotal' 
 FROM Empregado
 WHERE Salario > 2000 OR Comissao > 800
 ORDER BY NomeEmpregado ASC;
@@ -151,7 +151,7 @@ WHERE Salario > 2000 OR Comissao > 800
 ORDER BY RemuneracaoTotal ASC;
 
 -- 17.Lista Nome, Salário, comissão e remuneração total de todos os empregados com salário maior que 2.000 ou comissão maior que 800. 
--- Apresenta o resultado classificado em ordem crescente de departamento e em cada departamento, em ordem decrescente de salario. 
+-- Apresenta o resultado classificado em ordem crescente de departamento e em cada departamento, em ordem decrescente de salario. ***
 
 SELECT E.NomeEmpregado, E.Salario, E.Comissao, (E.Salario + E.Comissao) as 'RemuneracaoTotal'
 FROM Empregado as E JOIN Departamento as D
@@ -165,7 +165,7 @@ SELECT MAX(Salario) as 'Maior-Salario', MIN(Salario) as 'Menor-Salario', AVG(Sal
 
 -- 19.Lista o maior salário, o menor salário, a média dos salários e a quantidade dos Empregados com cargo GER ou VENDAS.
 
-SELECT MAX(Salario) as 'Maior-Salario', MIN(Salario) as 'Menor-Salario', AVG(Salario) as 'Média-Salarial', COUNT(IdEmpregado) AS 'Empregados-GER-OR-VENDAS'
+SELECT MAX(Salario) as 'Maior-Salario', MIN(Salario) as 'Menor-Salario', AVG(Salario) as 'Média-Salarial', COUNT(Cargo) AS 'Qnt-Cargo-GER-OR-VENDAS'
 FROM Empregado
 WHERE Cargo = 'GER' OR Cargo = 'VENDAS'
 
@@ -236,7 +236,7 @@ WHERE Salario > (SELECT AVG(Salario) FROM Empregado);
  SELECT E.NomeEmpregado, E.Salario
  FROM Empregado as E JOIN Departamento as D
  ON E.IdDepto = D.IdDepto
- WHERE E.Salario IN(SELECT MIN(E.Salario) FROM Empregado AS E GROUP BY E.IdDepto)
+ WHERE E.Salario IN(SELECT MIN(Salario) FROM Empregado AS E GROUP BY E.IdDepto)
  ORDER BY D.IdDepto ASC;
 
 -- 30.Lista quantos empregados em cada departamento tem salário maior que a média de todos os salários
@@ -247,6 +247,74 @@ ON E.IdDepto = D.IdDepto
 WHERE E.Salario > (SELECT AVG(Salario) FROM Empregado)
 GROUP BY D.NomeDepto
 
+-- 33.Listar a coluna Divisao da tabela Departamento.
 
+SELECT Divisao FROM Departamento;
+
+-- 34.Listar a coluna Divisaoda tabela Departamento, porém mostre somente linhas distintas (sem repetição).
+
+SELECT Distinct Divisao FROM Departamento;
+
+-- 35.Crie uma cosulta que faça a concatenação entre as colunas Divisaoe Localda tabela Departamento, para separar as colunas utilize ‘–‘. Crie o um alias para coluna ‘Divisão + Local‘
+
+SELECT Divisao + ' - ' + Local as 'Divisão + Local' FROM Departamento 
+
+-- 36.Crie uma consulta que listeas colunas: NomeEmpregadoe Salarioda tabela Empregado. Crie as seguintes colunas calculadas:
+
+SELECT NomeEmpregado, Salario, (Salario * 1.1) as 'Salário Mais 10%' FROM Empregado;
+
+SELECT NomeEmpregado, Salario, (Salario * 1.2) as 'Salário Mais 20%' FROM Empregado; 
+
+SELECT NomeEmpregado, Salario, (Salario * 0.9) as 'Salário Menos 10%' FROM Empregado;
+
+SELECT NomeEmpregado, Salario, (Salario * 0.8) as 'Salário Menos 20%' FROM Empregado;
+
+-- 37.Crie uma consulta que liste as colunas: NomeEmpregado e Salario da tabela Empregado. Crie as seguintes colunas calculadas:
+
+-- Salario Total
+
+SELECT NomeEmpregado, Salario, (Salario + Comissao) as 'Salário Total' FROM Empregado;
+
+-- Salario Total Anual
+
+SELECT NomeEmpregado, Salario, ((Salario + Comissao ) * 12) as 'Salário Total Anual' FROM Empregado;
+
+-- Imposto de Renda ( 5% do Salário Total)
+
+SELECT NomeEmpregado, Salario, ((Salario + Comissao) * .05) as 'Valor Descontado pelo Imposto de Renda' FROM Empregado;
+
+-- Desconto Plano de Saúde ( 2% do Salário Total)
+
+SELECT NomeEmpregado, Salario, ((Salario + Comissao) * .02) as 'Valor Descontado pelo Plano de Saúde' FROM Empregado;
+
+-- Desconto Alimentação (1.5% do Salário Total)
+
+SELECT NomeEmpregado, Salario, ((Salario + Comissao) * 0.015) as 'Valor Desconto Alimentação' FROM Empregado;
+
+-- Salário Liquido ( Salário Total – Soma dos Descontos)
+
+SELECT NomeEmpregado, Salario, (Salario + Comissao) - ((Salario + Comissao) * (.05 + .02 + .015)) as 'Salário Liquido'
+FROM Empregado;
+
+-- Salário Diário
+
+SELECT NomeEmpregado, Salario, (Salario / 30) as 'Salario Diário' FROM Empregado;
+
+-- Salário por Hora
+
+SELECT NomeEmpregado, Salario, ((Salario / 30) / 8) as 'Salário por Hora' FROM Empregado; 
+
+-- Salário por Minuto
+
+SELECT NomeEmpregado, Salario, (((Salario / 30) / 8) / 60) as 'Salário por Minuto' FROM Empregado;
+
+-- Salário por Segundo
+SELECT NomeEmpregado, Salario, ((((Salario / 30) / 8) / 60) / 60) as 'Salário por Segundo' FROM Empregado; 
+
+
+
+UPDATE Empregado
+SET Comissao = 0
+WHERE Comissao IS NULL 
 
 
